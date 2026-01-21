@@ -36,6 +36,6 @@ async def close_db():
 
 async def get_db_pool():
     if db_pool is None:
-        print("❌ Critical: Database pool accessed but not initialized.")
+        print("❌ Critical: Database pool accessed before initialization")
         raise RuntimeError("Database pool not initialized")
     return db_pool
