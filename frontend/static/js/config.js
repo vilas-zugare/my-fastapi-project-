@@ -1,4 +1,5 @@
-export const API_URL = 'http://localhost:8000/api';
+export const API_URL = `${window.location.origin}/api`;
+
 
 const urlParams = new URLSearchParams(window.location.search);
 const mIdParam = urlParams.get('match_id');
