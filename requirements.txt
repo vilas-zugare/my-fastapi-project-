@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+gunicorn
+asyncpg
+sqlalchemy
+python-dotenv
+pydantic
+pydantic-settings
+requests
+supabase

@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Cricket Tournament Overlay</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+
+<body>
+    <header class="top-bar">
+        <div class="flex-row">
+            <strong class="text-lg-bold">TESTING TOURNAMENT</strong>
+            <span>🤠</span>
+        </div>
+        <div class="flex-row text-sm-flex">
+            <span>Total Balance : <span class="text-neon-green">₹ 400</span></span>
+            <div class="user-avatar-sm">D</div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div class="toolbar-wrapper">
+            <div class="flex-row">
+                <span class="text-section-header">Edit Matches</span>
+                <button class="btn-green-sm">Clear Screen</button>
+                <button class="btn-green-sm">Tournament Name</button>
+            </div>
+            <div class="overlay-link-box text-gray-sm">
+                Overlay Link : <a href="#" class="text-blue-link">ndsports.in/...</a>
+            </div>
+        </div>
+
+        <div class="match-header-box">
+            <div class="team-box-left">
+                <div class="text-team-header" id="header_team_name">Batting Team</div>
+                <div class="text-score-main">
+                    <span id="header_score">0/0</span>
+                    <span id="header_overs" class="text-overs-sub">(0.0 ov)</span>
+                </div>
+            </div>
+            <div class="vs-badge">VS</div>
+            <div id="target-display"
+                style="display:none; position:absolute; top:70px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.8); color:#fff; padding:4px 12px; border-radius:12px; font-size:14px; border:1px solid #444;">
+            </div>
+            <!-- FIXED RIGHT BOX WITH IDs -->
+            <div class="team-box-right">
+                <div class="text-team-header" id="header_bowling_name">Bowling Team</div>
+                <div id="header_bowling_score" style="font-size:22px; color:#ddd; font-weight:bold; height:28px;"></div>
+                <div class="team-color-row">Team Color <span class="team-color-swatch"></span></div>
+            </div>
+        </div>
+
+        <div class="toss-banner">
+            <!-- Dynamic Content -->
+        </div>
+
+        <div class="tab-bar">
+            <button class="tab-btn active" onclick="switchTab('match')">Match Center</button>
+            <button class="tab-btn" onclick="switchTab('squad')">Squads</button>
+            <button class="tab-btn" onclick="switchTab('scorecard')">Scorecard</button>
+            <button class="tab-btn" onclick="switchTab('graph')">Graph /Charts</button>
+            <button class="tab-btn" onclick="switchTab('commentary')">Commentary</button>
+        </div>
+
+        <div id="matchCenterPanel">
+            <div class="dashboard-grid">
+                <div class="col-left">
+                    <div class="panel-box player-card-panel">
+                        <div class="player-cards-container">
+
+                            <div class="player-card" id="p1-card">
+                                <div class="card-padding"
+                                    style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span id="p1_name" class="text-white-bold-sm">Batsman 1</span>
+                                    <button onclick="window.changeBatsman('striker')"
+                                        class="btn-change-xs">Change</button>
+                                </div>
+
+                                <div class="player-flex-layout">
+                                    <div class="avatar-circle"></div>
+                                    <div class="stats-content">
+                                        <div id="p1_score" class="score-highlight">0 <span>(0)</span></div>
+
+                                        <div id="p1_stats" class="stats-detail-row">
+                                            4s: 0 &nbsp; 6s: 0 &nbsp; SR: 0.00
+                                        </div>
+
+                                        <button class="btn-profile btn-profile-auto">Profile</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="swap-icon-row">
+                                <button class="btn-swap-circle">&#8646;</button>
+                            </div>
+
+                            <div class="player-card" id="p2-card">
+                                <div class="card-padding"
+                                    style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span id="p2_name" class="text-white-bold-sm">Batsman 2</span>
+                                    <button onclick="window.changeBatsman('non_striker')"
+                                        class="btn-change-xs">Change</button>
+                                </div>
+
+                                <div class="player-flex-layout">
+                                    <div class="avatar-circle"></div>
+
+                                    <div class="stats-content">
+                                        <div id="p2_score" class="score-highlight text-white">0 <span>(0)</span></div>
+
+                                        <div id="p2_stats" class="stats-detail-row">
+                                            4s: 0 &nbsp; 6s: 0 &nbsp; SR: 0.00
+                                        </div>
+
+                                        <button class="btn-profile btn-profile-auto">Profile</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="player-card bowler-card-wrapper" id="bowler-card">
+                                <div class="bowler-header-bg bowler-header-flex">
+                                    <span id="tv_bowler" class="text-white-bold-sm">Bowler Name</span>
+                                    <button onclick="window.showSelectBowlerModal()"
+                                        class="btn-change-xs">Change</button>
+                                </div>
+
+                                <div class="player-flex-layout">
+                                    <div class="avatar-circle"></div>
+
+                                    <div class="stats-content">
+                                        <div id="tv_curBo_score" class="score-highlight text-bowler-main">0.0 - 0 - 0 -
+                                            0</div>
+
+                                        <div class="stats-detail-row">
+                                            Econ: <span id="tv_curBo_econ">0.00</span>
+                                            Dots: <span id="tv_curBo_dots">0</span>
+                                            Extras: <span id="tv_curBo_extras">0</span>
+                                        </div>
+
+                                        <button class="btn-profile btn-profile-red">Profile</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="partnership-strip">
+                            <div class="part-group">
+                                <span class="partnership-badge">Partnership</span>
+                                <span id="partnership_val" class="text-white-bold">0 (0)</span>
+                            </div>
+
+                            <div class="part-group-sm">
+                                <span class="text-gray-label">This Over :</span>
+                                <span id="this_over_runs" class="text-white-bold">00 runs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-right">
+                    <div class="panel-box control-section">
+                        <div class="btn-group">
+                            <button class="btn-run">0</button>
+                            <button class="btn-run">1</button>
+                            <button class="btn-run">2</button>
+                            <button class="btn-run">3</button>
+                            <button class="btn-run">4</button>
+                            <button class="btn-run">5</button>
+                            <button class="btn-run">6</button>
+                            <button class="btn-run">7</button>
+                            <button class="btn-undo" title="Undo">&#8634;</button>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn-action">Wide Ball</button>
+                            <button class="btn-action">No Ball</button>
+                            <button class="btn-action">Penalty</button>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn-action btn-danger">Bowled</button>
+                            <button class="btn-action btn-danger">Stumped</button>
+                            <button class="btn-action btn-danger">Caught</button>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn-action btn-danger">Runout</button>
+                            <button class="btn-action btn-danger">LBW</button>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn-action btn-danger">Hit-Wicket</button>
+                            <button class="btn-action btn-danger">Retired Out</button>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn-action btn-danger">Other Wkt</button>
+                            <button id="btn_end_inning" class="btn-action btn-dark">End Inning</button>
+                        </div>
+                        <button class="btn-action btn-dark w-full">Walkover / Abandone Match</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-row">
+                <div class="bottom-panel">
+                    <div class="panel-header">
+                        <span>Lower Scoreboard</span>
+                        <button class="btn-lower-score">Lower Scoreboard ></button>
+                    </div>
+                    <div class="bottom-panel-content">
+                        <div class="toggle-row">
+                            <span>Automatic Loop :</span>
+                            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                        </div>
+                        <div class="toggle-row">
+                            <span>PowerPlay :</span>
+                            <select class="select-dark-clean">
+                                <option>No Powerplay</option>
+                            </select>
+                        </div>
+                        <div class="flex-row">
+                            <input type="text" placeholder="Enter Commentator" class="input-dark">
+                            <button class="btn-green-show">Show</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-panel">
+                    <div class="panel-header">
+                        <span>Theme Other Panels to show</span>
+                        <button class="btn-clear-screen">Clear Screen</button>
+                    </div>
+                    <div class="bottom-panel-content green-grid">
+                        <button class="btn-theme">Team vs Team Logo</button>
+                        <button class="btn-theme">Toss Details</button>
+                        <button class="btn-theme">4s/6s Counter</button>
+                        <button class="btn-theme">Black Board</button>
+                        <button class="btn-theme">Both Squads (Names)</button>
+                        <button class="btn-theme">Field Position</button>
+                    </div>
+                </div>
+
+                <div class="bottom-panel flex-1-5">
+                    <div class="panel-header">
+                        <span>Team Squad Settings - Quick Edit</span>
+                    </div>
+                    <div class="bottom-panel-content">
+                        <div class="squad-columns">
+                            <!-- Helper section for quick edit, can remain -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SQUAD PANEL (RESTORED) -->
+        <div id="squadPanel" style="display:none; padding:20px;">
+            <div class="panel-box" style="padding:20px;">
+                <h2 class="text-white-bold" style="margin-bottom:20px;">Manage Squads / Select Playing 11</h2>
+
+                <div class="flex-row" style="margin-bottom:20px; gap:20px;">
+                    <select id="squadTeamSelect" class="select-dark" onchange="window.loadSquadPlayers()"
+                        style="padding:10px; min-width:200px;">
+                        <option value="" disabled selected>Select Team...</option>
+                    </select>
+
+                    <span class="text-white-bold" style="font-size:16px;">
+                        Selected: <span id="squadCount" style="color:#2b66ff">0</span>/11
+                    </span>
+
+                    <button id="saveSquadBtn" class="btn-green-sm" onclick="window.saveSquad()">Save Playing 11</button>
+                </div>
+
+                <div id="squadList"
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
+                    <!-- Players Injected Here -->
+                    <div style="color:#888;">Select a team to load players...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- OTHER PANELS (Placeholders) -->
+        <div id="scorecardPanel" style="display:none; padding:20px;">
+            <h2 class="text-white-bold">Scorecard (Coming Soon)</h2>
+        </div>
+        <div id="graphPanel" style="display:none; padding:20px;">
+            <h2 class="text-white-bold">Graphs (Coming Soon)</h2>
+        </div>
+        <div id="commentaryPanel" style="display:none; padding:20px;">
+            <h2 class="text-white-bold">Commentary (Coming Soon)</h2>
+        </div>
+
+        <dialog id="newBatsmanModal" class="modal-dark">
+            <h3>Select New Batsman</h3>
+            <select id="newBatsmanSelect" class="select-full-width">
+                <option>Loading...</option>
+            </select>
+            <button id="confirmBatsmanBtn" class="btn-confirm-blue">Confirm</button>
+        </dialog>
+
+        <dialog id="selectBowlerModal" class="modal-dark">
+            <h3>Select Bowler</h3>
+            <select id="bowlerSelect" class="select-full-width">
+                <option>Loading...</option>
+            </select>
+            <button id="confirmBowlerBtn" class="btn-confirm-red">Set Bowler</button>
+            <button onclick="document.getElementById('selectBowlerModal').close()"
+                class="btn-cancel-gray">Cancel</button>
+        </dialog>
+
+    </div>
+    <script type="module" src="../static/js/main.js" defer></script>
+</body>
+
+</html>
