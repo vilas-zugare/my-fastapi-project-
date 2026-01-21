@@ -1,5 +1,5 @@
 // Configuration
-const API_URL = 'http://localhost:8000/api';
+import { API_URL } from './config.js';
 console.log("Logic Script Loaded: v16 - Undo Enabled");
 
 // --- DATA LOGIC WRAPPER ---
