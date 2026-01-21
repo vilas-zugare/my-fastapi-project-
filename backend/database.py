@@ -18,24 +18,15 @@ db_pool = None
 
 async def init_db():
     global db_pool
-    print("=== DB INIT START ===")
-    print("DATABASE_URL =", DATABASE_URL)
-
     try:
-        db_pool = await asyncpg.create_pool(
-            DATABASE_URL,
-            timeout=10,
-            min_size=1,
-            max_size=5,
-        )
+        db_pool = await asyncpg.create_pool(DATABASE_URL,ssl="require",timeout=10,min_size=1,max_size=5,)
+
         print("✅ Database connection pool initialized.")
+        return db_pool
     except Exception as e:
-        print("❌ REAL DB ERROR TYPE:", type(e))
-        print("❌ REAL DB ERROR MSG:", e)
+        print(f"❌ Error initializing database pool: {e}")
         db_pool = None
-
-    print("=== DB INIT END ===")
-
+        return None
 
 async def close_db():
     global db_pool
