@@ -10,7 +10,8 @@ router = APIRouter()
 @router.post("/end_inning")
 async def end_inning(payload: SimpleMatchRequest):
     try:
-        async with database.db_pool.acquire() as conn:
+        pool = await database.get_db_pool()
+        async with pool.acquire() as conn:
             async with conn.transaction():
                 match_id = payload.match_id
                 match = await fetch_match_state(conn, match_id)
@@ -59,7 +60,8 @@ async def end_inning(payload: SimpleMatchRequest):
 @router.post("/undo_last_action")
 async def undo_last_action(payload: SimpleMatchRequest):
     try:
-        async with database.db_pool.acquire() as conn:
+        pool = await database.get_db_pool()
+        async with pool.acquire() as conn:
             async with conn.transaction():
                 match_id = payload.match_id
                 # 1. Fetch Last Ball
@@ -164,7 +166,8 @@ async def undo_last_action(payload: SimpleMatchRequest):
 @router.post("/update_score")
 async def update_score(payload: ScoreUpdate):
     try:
-        async with database.db_pool.acquire() as conn:
+        pool = await database.get_db_pool()
+        async with pool.acquire() as conn:
             async with conn.transaction():
                 match_id = payload.match_id
                 match = await fetch_match_state(conn, match_id)
@@ -272,7 +275,8 @@ async def update_score(payload: ScoreUpdate):
 @router.post("/set_new_batsman")
 async def set_new_batsman(payload: NewBatsmanRequest):
     try:
-        async with database.db_pool.acquire() as conn:
+        pool = await database.get_db_pool()
+        async with pool.acquire() as conn:
             match_id = payload.match_id
             column = "current_striker_id"
             if payload.role == 'non_striker':
@@ -287,7 +291,8 @@ async def set_new_batsman(payload: NewBatsmanRequest):
 @router.post("/set_bowler")
 async def set_bowler(payload: NewBatsmanRequest):
     try:
-        async with database.db_pool.acquire() as conn:
+        pool = await database.get_db_pool()
+        async with pool.acquire() as conn:
             match_id = payload.match_id
             await conn.execute("""
                 UPDATE matches 

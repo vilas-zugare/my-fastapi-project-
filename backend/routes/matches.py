@@ -10,7 +10,8 @@ router = APIRouter()
 @router.get("/match_data")
 async def get_match_data(match_id: int):
     try:
-        async with database.db_pool.acquire() as conn:
+        pool = await database.get_db_pool()
+        async with pool.acquire() as conn:
             return await build_match_response(conn, match_id)
     except Exception as e:
         print(f"Error: {e}")
@@ -19,7 +20,8 @@ async def get_match_data(match_id: int):
 @router.get("/available_players")
 async def get_available_players(match_id: int):
     try:
-        async with database.db_pool.acquire() as conn:
+        pool = await database.get_db_pool()
+        async with pool.acquire() as conn:
             match = await fetch_match_state(conn, match_id)
             if not match: return {"error": "Match not found"}
             
@@ -67,7 +69,8 @@ async def get_available_players(match_id: int):
 @router.get("/bowling_squad")
 async def get_bowling_squad(match_id: int):
     try:
-        async with database.db_pool.acquire() as conn:
+        pool = await database.get_db_pool()
+        async with pool.acquire() as conn:
             match = await fetch_match_state(conn, match_id)
             if not match: return {"players": []}
             
@@ -94,7 +97,8 @@ async def get_bowling_squad(match_id: int):
 @router.post("/matches/{match_id}/select_squad")
 async def select_squad(match_id: int, payload: SquadSelectionRequest):
     try:
-        async with database.db_pool.acquire() as conn:
+        pool = await database.get_db_pool()
+        async with pool.acquire() as conn:
             async with conn.transaction():
                 values = [(match_id, pid, True) for pid in payload.player_ids]
                 await conn.executemany("""
@@ -109,7 +113,8 @@ async def select_squad(match_id: int, payload: SquadSelectionRequest):
 @router.post("/end_match")
 async def end_match(payload: EndMatchRequest):
     try:
-        async with database.db_pool.acquire() as conn:
+        pool = await database.get_db_pool()
+        async with pool.acquire() as conn:
             # Update match status to 'completed'
             await conn.execute("""
                 UPDATE matches 
